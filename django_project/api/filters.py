@@ -11,6 +11,7 @@ class QueryParamFilter:
         self.model = model
         self.all_field_names = [item.name for item in model._meta.fields]
 
+    # translates operator provided in query param to the one which is acceptable to django orm apis
     @staticmethod
     def operator_to_orm_modifier(operator):
         if operator == 'exact':
@@ -18,24 +19,28 @@ class QueryParamFilter:
         else:
             return "__" + operator
 
+    # returns eg CharField, BooleanField etc. Can be used to validate if given operator works with given field
     def get_validated_field_type(self, field_name):
         if field_name is None:
             return None
         field_type = self.model._meta.get_field(field_name).get_internal_type()
         return field_type if field_type in self.SUPPORTED_FIELD_TYPES else None
 
+    # returns field_name or None
     def get_validated_field_name(self, name_with_operator):
         if "__" not in name_with_operator:
             return None
         name = name_with_operator.split("__")[0]
         return name if name in self.all_field_names else None
 
+    # returns operator or None
     def get_validated_operator(self, name_with_operator):
         if "__" not in name_with_operator:
             return None
         operator = name_with_operator.split("__")[1]
         return operator if operator in self.SUPPORTED_OPERATORS else None
 
+    # returns "Q" object to be used with "filter"
     def get_filter_statement(self, request_get):
         filter_statement = Q()
         for name_with_operator in request_get:

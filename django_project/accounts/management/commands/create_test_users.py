@@ -31,7 +31,7 @@ class Command(BaseCommand):
             last_name="customer ln"
         )
 
-        # create a tokens
+        # create fake, pre-determined tokens
         admin_token = AuthToken.get_or_create_unsafe_token(admin, "11111")
         agent_token = AuthToken.get_or_create_unsafe_token(agent, "22222")
         customer_token = AuthToken.get_or_create_unsafe_token(customer, "33333")

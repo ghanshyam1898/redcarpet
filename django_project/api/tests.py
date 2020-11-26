@@ -48,9 +48,9 @@ class DataBaseIntegrityTest(TestCase):
         self.assertEqual(LoanSnapshotModel.objects.count(), 1)
         loan = LoanModel.objects.first()
         loan.loan_start_date = "2020-12-13"
-        loan.save()
-        # check if 2nd snapshot was created
-        self.assertEqual(LoanSnapshotModel.objects.count(), 2)
+        loan.save()  # update an entry
+
+        self.assertEqual(LoanSnapshotModel.objects.count(), 2)  # check if 2nd snapshot was created
 
 
 class ApiAccessTest(TestCase):
