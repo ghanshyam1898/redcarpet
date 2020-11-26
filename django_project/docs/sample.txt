@@ -1,7 +1,12 @@
+# You can copy-paste these curl requests to your command line and note the responses.
+# You can also use the fake, testing-only tokens i.e., 11111 for admin, 22222 for agent and 33333 for customer
+# to check if authorization is working properly.
+
+
 # admin list users
-	Request
-		curl --location --request GET 'http://127.0.0.1:8000/api/list_users/' \
-		--header 'Authorization: token 11111'
+Request
+curl --location --request GET 'http://127.0.0.1:8000/api/list_users/' \
+--header 'Authorization: token 11111'
 
 	Response
 		{
@@ -33,13 +38,13 @@
 
 
 # get or edit user
-	Request
-		curl --location --request PATCH 'http://127.0.0.1:8000/api/get_or_edit_user/customer@customer.com/' \
-		--header 'Authorization: token 11111' \
-		--header 'Content-Type: application/json' \
-		--data-raw '{
-		    "first_name": "rama"
-		}'
+Request
+curl --location --request PATCH 'http://127.0.0.1:8000/api/get_or_edit_user/customer@customer.com/' \
+--header 'Authorization: token 11111' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "first_name": "rama"
+}'
 
 	Response
 		{
@@ -51,24 +56,24 @@
 
 
 # create new loan
-	Request
-		curl --location --request POST 'http://127.0.0.1:8000/api/create_new_loan/' \
-		--header 'Authorization: token 22222' \
-		--header 'Content-Type: application/json' \
-		--data-raw '{
-		    "username": "customer@customer.com",
-		    "emi_value": 20.0,
-		    "emi_type": "Advance",
-		    "interest_rate": 1.0,
-		    "payment_recurrence_days": 1.0,
-		    "processing_charge": 100.0,
-		    "type_of_loan": "Personal loan",
-		    "scheme": "asdf",
-		    "total_period_of_loan_days": 23,
-		    "collateral": "collateral",
-		    "status": "new",
-		    "loan_start_date": "2020-12-12"
-		}'
+Request
+curl --location --request POST 'http://127.0.0.1:8000/api/create_new_loan/' \
+--header 'Authorization: token 22222' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "username": "customer@customer.com",
+    "emi_value": 20.0,
+    "emi_type": "Advance",
+    "interest_rate": 1.0,
+    "payment_recurrence_days": 1.0,
+    "processing_charge": 100.0,
+    "type_of_loan": "Personal loan",
+    "scheme": "asdf",
+    "total_period_of_loan_days": 23,
+    "collateral": "collateral",
+    "status": "new",
+    "loan_start_date": "2020-12-12"
+}'
 
 	Response
 		{
@@ -92,13 +97,13 @@
 
 
 # edit loan
-	Request
-		curl --location --request PATCH 'http://127.0.0.1:8000/api/edit_loan/1/' \
-		--header 'Authorization: token 22222' \
-		--header 'Content-Type: application/json' \
-		--data-raw '{
-		    "loan_start_date": "2020-09-09"
-		}'
+Request
+curl --location --request PATCH 'http://127.0.0.1:8000/api/edit_loan/1/' \
+--header 'Authorization: token 22222' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "loan_start_date": "2020-09-09"
+}'
 
 	Response
 		{
@@ -123,13 +128,13 @@
 		}
 
 # approve loan
-	Request
-		curl --location --request POST 'http://127.0.0.1:8000/api/approve_loan/' \
-		--header 'Authorization: token 11111' \
-		--header 'Content-Type: application/json' \
-		--data-raw '{
-		    "loan_id": "1"
-		}'
+Request
+curl --location --request POST 'http://127.0.0.1:8000/api/approve_loan/' \
+--header 'Authorization: token 11111' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "loan_id": "1"
+}'
 
 	Response
 		{
@@ -138,13 +143,13 @@
 
 
 # list loans with filters
-	Request
-		curl --location --request GET 'http://127.0.0.1:8000/api/list_loans/?emi_value__exact=20&emi_type__icontains=advance&loan_start_date__lt=2021-12-13' \
-		--header 'Authorization: token 11111' \
-		--header 'Content-Type: application/json' \
-		--data-raw '{
-		    "loan_id": "1"
-		}'
+Request
+curl --location --request GET 'http://127.0.0.1:8000/api/list_loans/?emi_value__exact=20&emi_type__icontains=advance&loan_start_date__lt=2021-12-13' \
+--header 'Authorization: token 11111' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "loan_id": "1"
+}'
 
 	Response
 		{

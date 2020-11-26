@@ -68,3 +68,16 @@ class AuthToken(models.Model):
             )
             object.save()
             return object.token
+
+    # for testing only
+    @staticmethod
+    def get_or_create_unsafe_token(user, token):
+        try:
+            return AuthToken.objects.get(user=user).token
+        except AuthToken.DoesNotExist:
+            object = AuthToken(
+                user=user,
+                token=token
+            )
+            object.save()
+            return object.token

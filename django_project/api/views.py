@@ -65,6 +65,8 @@ class EditLoan(generics.UpdateAPIView):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
+
+        # Once approved, loans cannot be edited
         if instance.status == LoanModel.LOAN_STATUS_APPROVED:
             raise ValidationError("Loan cannot be edited after being approved")
 

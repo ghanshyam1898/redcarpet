@@ -32,27 +32,9 @@ class Command(BaseCommand):
         )
 
         # create a tokens
-        object = AuthToken(
-            user=admin,
-            token="11111"
-        )
-        object.save()
-        admin_token = object.token
-
-        object = AuthToken(
-            user=agent,
-            token="22222"
-        )
-        object.save()
-        agent_token = object.token
-
-        object = AuthToken(
-            user=customer,
-            token="33333"
-        )
-
-        object.save()
-        customer_token = object.token
+        admin_token = AuthToken.get_or_create_unsafe_token(admin, "11111")
+        agent_token = AuthToken.get_or_create_unsafe_token(agent, "22222")
+        customer_token = AuthToken.get_or_create_unsafe_token(customer, "33333")
 
         print(f"Token for admin {admin.username} created : {admin_token}")
         print(f"Token for agent {agent.username} created : {agent_token}")

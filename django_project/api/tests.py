@@ -87,12 +87,24 @@ class ApiAccessTest(TestCase):
                      "type_of_loan": AbstractLoanModel.LOAN_TYPE_HOME_EQUITY_LOAN, "scheme": "Ujala yogana",
                      "total_period_of_loan_days": 3650, "collateral": "House as collateral",
                      "loan_start_date": "2020-12-12"}
+
         # create a loan for customer
         LoanModel.objects.create(**loan_data)
 
         # create a loan for admin
         loan_data["user"] = self.admin_user
         LoanModel.objects.create(**loan_data)
+
+    def get_sum_of_response_data_count_through_paginated_api(self, start_page, headers):
+        next_page = start_page
+        total_count = 0
+        while next_page is not None:
+            response = self.api_client.get(next_page, follow=True, **headers)
+            self.assertEqual(response.status_code, 200)
+            total_count += response.json()['count']
+            next_page = response.json()['next']
+
+        return total_count
 
     def test_list_users(self):
         headers = dict()
@@ -109,6 +121,23 @@ class ApiAccessTest(TestCase):
         # test as customer
         headers["HTTP_AUTHORIZATION"] = f"token {self.customer_token}"
         response = self.api_client.get("/api/list_users", follow=True, **headers)
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 403)  # customers are forbidden from listing users
+
+    def test_list_loans(self):
+        headers = dict()
+        # test as admin
+        headers["HTTP_AUTHORIZATION"] = f"token {self.admin_token}"
+        self.assertEqual(self.get_sum_of_response_data_count_through_paginated_api("/api/list_loans", headers),
+                         LoanModel.objects.all().count())  # all loans returned
+
+        # test as agent
+        headers["HTTP_AUTHORIZATION"] = f"token {self.agent_token}"
+        self.assertEqual(self.get_sum_of_response_data_count_through_paginated_api("/api/list_loans", headers),
+                         LoanModel.objects.all().count())  # all loans returned
+
+        # test as customer
+        headers["HTTP_AUTHORIZATION"] = f"token {self.customer_token}"
+        self.assertEqual(self.get_sum_of_response_data_count_through_paginated_api("/api/list_loans", headers),
+                         LoanModel.objects.filter(user=self.customer_user).count())  # loans for only customer returned
 
     # similarly, we can write tests for other apis too
