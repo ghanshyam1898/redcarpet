@@ -1,13 +1,13 @@
 # Running this software
     Execute this command first to create one user of each role
-        docker-compose run web python django_project/manage.py create_test_users
+        docker-compose run web python manage.py create_test_users
 
     Run tests
-        docker-compose run web cd django_project; python manage.py test
+        docker-compose run web python manage.py test
 
     Run project
-        docker-compost run web python django_project/manage.py migrate
-        docker-compose run web python django_project/manage.py create_test_users
+        docker-compose run web python manage.py migrate
+        docker-compose run web python manage.py create_test_users
         docker-compose run --service-ports web
 
 # Language and Framework
